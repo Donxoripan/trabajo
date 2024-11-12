@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Lista de Comentarios{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-end mb-3">
+        <!-- Botón para subir comentario (visible solo para usuarios registrados) -->
+        {% if user.is_authenticated %}
+            <a href="{% url 'comentarios:subir_comentario' %}" class="btn btn-success">Subir Comentario</a>
+        {% else %}
+            <button class="btn btn-success" disabled data-bs-toggle="tooltip" data-bs-placement="top" title="Debes iniciar sesión para subir comentarios">
+                Subir Comentario
+            </button>
+        {% endif %}
+    </div>
+    <h2>Lista de Comentarios</h2>
+    <div class="list-group">
+        {% for comentario in comentarios %}
+            <div class="list-group-item d-flex flex-column align-items-start mb-4" style="gap: 20px; position: relative;">
+                <div class="border p-3" style="flex-grow: 1; width: 100%;">
+
+                    <!-- Título y datos del comentario -->
+                    <h5 class="mb-1">{{ comentario.titulo }}</h5>
+                    <p class="text-muted mb-2">
+                        Publicado por: {{ comentario.usuario.username }} - {{ comentario.fecha_creacion|date:"d/m/Y H:i" }}
+                    </p>
+                    <p class="mb-2">{{ comentario.descripcion|truncatewords:20 }}</p>
+                    <a href="{% url 'comentarios:ver_comentario' comentario.id %}" class="btn btn-sm btn-outline-primary">Ver Comentario</a>
+
+                    <!-- Botón de eliminar comentario solo visible para administradores -->
+                    {% if user.perfil.rol == 'administrador' %}
+                        <a href="{% url 'comentarios:eliminar_comentario' comentario.id %}" class="btn btn-sm btn-danger ms-2" style="position: absolute; top: 10px; right: 10px;">Eliminar Comentario</a>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+    // Inicializa los tooltips de Bootstrap
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+</script>
+{% endblock %}

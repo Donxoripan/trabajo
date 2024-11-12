@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}Eliminar Comentario{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card p-4 shadow-lg">
+        <h2 class="text-center mb-4">Eliminar Comentario</h2>
+        <p class="text-center"><strong>{{ comentario.titulo }}</strong></p>
+        <p class="text-center">{{ comentario.mensaje }}</p>
+
+        <div class="text-center mt-4">
+            <p>¿Estás seguro de que quieres eliminar este comentario?</p>
+
+            <form method="POST">
+                {% csrf_token %}
+                <!-- Botón para eliminar comentario -->
+                <button type="submit" class="btn btn-danger btn-sm" style="width: 33%;">Eliminar</button>
+            </form>
+
+            <!-- Botón "Cancelar" para volver a ver el comentario -->
+            <div class="mt-3">
+                <a href="{% url 'comentarios:ver_comentario' comentario.id %}" class="btn btn-secondary btn-sm" style="width: 33%;">Cancelar</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

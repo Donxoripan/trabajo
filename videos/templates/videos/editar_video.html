@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}Editar Video{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card p-4 shadow-lg">
+        <h2>Editar Video</h2>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            <div class="row">
+                
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <label for="id_titulo">Título:</label>
+                        {{ form.titulo.errors }}
+                        {{ form.titulo }}
+                    </div>
+                    <div class="form-group">
+                        <label for="id_descripcion">Descripción:</label>
+                        {{ form.descripcion.errors }}
+                        {{ form.descripcion }}
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="id_video">Cambiar Video (opcional):</label>
+                        {{ form.video.errors }}
+                        {{ form.video }}
+                    </div>
+                    <div class="form-group">
+                        <label for="id_video">Video Actual:</label><br>
+                        <video controls class="img-thumbnail mb-2" width="100%" style="max-width: 250px; height: auto;">
+                            <source src="{{ video.video.url }}" type="video/mp4">
+                            Tu navegador no soporta el video.
+                        </video>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group mt-3">
+                <div class="border p-3" style="width: 33%; margin: 0 auto;">
+                    <button type="submit" class="btn btn-primary d-block w-100 mb-2">Guardar Cambios</button>
+                    <a href="{% url 'videos:detalle_video' video.pk %}" class="btn btn-secondary d-block w-100">Cancelar</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

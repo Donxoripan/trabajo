@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ video.titulo }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card p-4 shadow-lg">
+        <div class="row">
+            <!-- Columna izquierda (2/3 del espacio) para el video, título, autor, y descripción -->
+            <div class="col-md-8 mb-3">
+                <div class="border p-3 rounded">
+                    <!-- Video en un cuadro separado -->
+                    <div class="video-container border p-3 mb-4 rounded">
+                        <video controls class="img-fluid">
+                            <source src="{{ video.video.url }}" type="video/mp4">
+                            Tu navegador no soporta el video.
+                        </video>
+                    </div>
+
+                    <!-- Título, Autor, Fecha y Descripción -->
+                    <h2>{{ video.titulo }}</h2>
+                    <p><small class="text-muted">Subido por {{ video.autor.username }} el {{ video.fecha_subida|date:"d/m/Y H:i" }}</small></p>
+                    <hr>
+                    <p>{{ video.descripcion }}</p>
+                </div>
+            </div>
+
+            <!-- Columna derecha (1/3 del espacio) para los botones -->
+            <div class="col-md-4">
+                <div class="border p-3 rounded">
+                    {% if request.user.is_authenticated %}
+                        {% if request.user == video.autor or request.user.perfil.rol == 'administrador' %}
+                            <ul class="list-unstyled">
+                                <li>
+                                    <a href="{% url 'videos:editar_video' video.pk %}" class="btn btn-secondary mb-2 w-100">Editar Video</a>
+                                </li>
+                                <li>
+                                    <form action="{% url 'videos:eliminar_video' video.pk %}" method="post" style="display:inline;">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-danger mb-2 w-100">Eliminar Video</button>
+                                    </form>
+                                </li>
+                            </ul>
+                        {% endif %}
+                    {% endif %}
+                    <!-- Botón Volver a la Lista de Videos, visible para todos los usuarios -->
+                    <a href="{% url 'videos:lista_videos' %}" class="btn btn-secondary mb-2 w-100">Volver a la Lista de Videos</a>
+                </div>
+                
+                <!-- Cuadro para mostrar la lista de videos en formato de lista -->
+                <div class="border p-3 mt-4 rounded">
+                    <h5>Lista de Videos</h5>
+                    <ul class="list-unstyled">
+                        {% for video_item in videos_list %}
+                            <li class="d-flex align-items-center mb-3 p-3 border rounded">
+                                <!-- Video en miniatura con título al lado -->
+                                <div class="mr-3">
+                                    <video width="150" height="100" controls>
+                                        <source src="{{ video_item.video.url }}" type="video/mp4">
+                                        Tu navegador no soporta el video.
+                                    </video>
+                                </div>
+                                <a href="{% url 'videos:detalle_video' video_item.pk %}" class="ml-3">{{ video_item.titulo }}</a>
+                            </li>
+                        {% empty %}
+                            <li class="list-group-item">No hay videos disponibles.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

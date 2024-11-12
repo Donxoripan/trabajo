@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block title %}Subir Nuevo Video{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card p-4 shadow-lg">
+        <h2 class="text-center mb-4">Subir Nuevo Video</h2>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            
+            <!-- Cuadrado que encierra todo el formulario -->
+            <div class="border p-4 rounded">
+                <div class="row">
+                    <!-- Columna izquierda para título y descripción -->
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="id_titulo">Título:</label>
+                            {{ form.titulo.errors }}
+                            {{ form.titulo }}
+                        </div>
+                        <div class="form-group">
+                            <label for="id_descripcion">Descripción:</label>
+                            {{ form.descripcion.errors }}
+                            {{ form.descripcion }}
+                        </div>
+                    </div>
+
+                    <!-- Columna derecha para seleccionar el video -->
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="id_video">Seleccionar Video:</label>
+                            {{ form.video.errors }}
+                            {{ form.video }}
+                        </div>
+
+                        <!-- Casilla de Vista Previa -->
+                        <div class="form-group mt-4">
+                            <label for="video-preview">Vista Previa:</label>
+                            <div id="video-preview" class="mt-2" style="max-width: 100%; height: 250px; overflow: hidden; display: none;">
+                                <video id="videoPlayer" width="100%" height="100%" controls>
+                                    <source id="videoSource" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botón de subir video -->
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-primary btn-sm" style="width: 33%;">Subir Video</button>
+            </div>
+        </form>
+
+        <!-- Botón "Volver" a la lista de videos -->
+        <div class="text-center mt-3">
+            <a href="{% url 'videos:lista_videos' %}" class="btn btn-secondary btn-sm" style="width: 33%;">Volver</a>
+        </div>
+    </div>
+</div>
+
+<!-- Script para mostrar la vista previa del video -->
+<script>
+    document.getElementById('id_video').addEventListener('change', function(event) {
+        const videoFile = event.target.files[0];
+        const videoPlayer = document.getElementById('videoPlayer');
+        const videoSource = document.getElementById('videoSource');
+        const videoPreview = document.getElementById('video-preview');
+
+        if (videoFile) {
+            const videoURL = URL.createObjectURL(videoFile);
+            videoSource.src = videoURL;
+            videoPlayer.style.display = 'block';  // Muestra el video
+            videoPreview.style.display = 'block'; // Muestra el contenedor del video
+            videoPlayer.load();
+        }
+    });
+</script>
+{% endblock %}

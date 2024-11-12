@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}Editar Comentario{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card p-4 shadow-lg">
+        <h2 class="text-center mb-4">Editar Comentario</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+
+            <!-- Cuadrado que encierra todo el formulario -->
+            <div class="border p-4 rounded">
+                <div class="row">
+                    <!-- Columna para título -->
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label for="id_titulo">Título:</label>
+                            {{ form.titulo.errors }}
+                            {{ form.titulo }}
+                        </div>
+                    </div>
+
+                    <!-- Cuadro para el comentario que ocupa todo el espacio -->
+                    <div class="col-12 mt-3">
+                        <div class="form-group">
+                            <label for="id_comentario">Comentario:</label>  <!-- Cambiado de "Descripción" a "Comentario" -->
+                            {{ form.descripcion.errors }}
+                            <!-- Aquí es donde se muestra el cuadro de texto del comentario -->
+                            <div class="border p-3">
+                                {{ form.descripcion }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botón de guardar cambios -->
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-primary btn-sm" style="width: 33%;">Guardar Cambios</button>
+            </div>
+        </form>
+
+        <!-- Botón "Cancelar" para volver a ver el comentario -->
+        <div class="text-center mt-3">
+            <a href="{% url 'comentarios:ver_comentario' comentario.id %}" class="btn btn-secondary btn-sm" style="width: 33%;">Cancelar</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Perfil de {{ user.username }}{% endblock %}
+
+{% block content %}
+    <div class="container mt-4">
+        <h1>Perfil de {{ user.username }}</h1>
+
+        <div class="card">
+            <div class="card-header">
+                <strong>Detalles del Usuario</strong>
+            </div>
+            <div class="card-body">
+                <p><strong>Nombre de Usuario:</strong> {{ user.username }}</p>
+                <p><strong>Email:</strong> {{ user.email }}</p>
+                <p><strong>Rol:</strong> {{ perfil.rol }}</p>
+
+                <a href="{% url 'usuarios:editar_perfil' %}" class="btn btn-warning">Editar Perfil</a>
+
+                <!-- Formulario para eliminar perfil -->
+                <form action="{% url 'usuarios:eliminar_usuario' user.id %}" method="POST" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar tu cuenta?')">Eliminar Perfil</button>
+                </form>
+            </div>
+        </div>
+
+        <a href="{% url 'usuarios:logout' %}" class="btn btn-danger mt-3">Cerrar Sesión</a>
+    </div>
+{% endblock %}

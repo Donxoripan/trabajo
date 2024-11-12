@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Eliminar cuenta{% endblock %}
+
+{% block content %}
+    <div class="container mt-4">
+        <h1>Eliminar Cuenta</h1>
+
+        <div class="alert alert-warning">
+            Estás a punto de eliminar tu cuenta, esta acción es irreversible.
+        </div>
+
+        <p><strong>Nombre de Usuario:</strong> {{ usuario.username }}</p>
+        <p><strong>Email:</strong> {{ usuario.email }}</p>
+
+        <form method="POST">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Eliminar mi cuenta</button>
+        </form>
+
+        <a href="{% url 'usuarios:perfil' %}" class="btn btn-secondary mt-3">Cancelar</a>
+    </div>
+{% endblock %}

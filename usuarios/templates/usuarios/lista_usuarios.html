@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}Lista de Usuarios{% endblock %}
+
+{% block content %}
+    <div class="container mt-4">
+        <h1>Usuarios Registrados</h1>
+
+        <!-- Verificar si hay usuarios -->
+        {% if usuarios %}
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Nombre de Usuario</th>
+                        <th>Email</th>
+                        <th>Rol</th>  <!-- Nueva columna para mostrar el rol -->
+                        <th>Fecha de Registro</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for usuario in usuarios %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ usuario.username }}</td>
+                            <td>{{ usuario.email }}</td>
+                            <td>
+                                <!-- Aquí mostramos el rol del usuario -->
+                                {% if usuario.perfil %}
+                                    {{ usuario.perfil.rol }}
+                                {% else %}
+                                    Sin rol asignado
+                                {% endif %}
+                            </td>
+                            <td>{{ usuario.date_joined|date:"d/m/Y" }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No hay usuarios registrados.</p>
+        {% endif %}
+    </div>
+{% endblock %}

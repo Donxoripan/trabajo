@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}Registro{% endblock %}
+
+{% block content %}
+    <div class="container mt-4">
+        <div class="form-container">
+            <h2>Registro</h2>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <!-- Nombre de Usuario -->
+                <div class="form-group">
+                    <label for="{{ form.username.id_for_label }}">Nombre de Usuario</label>
+                    {{ form.username }}
+                    <span class="tooltip-text">Requerido. 150 caracteres como máximo. Únicamente letras, dígitos y @/./+/-/_</span>
+                </div>
+
+                <!-- Correo Electrónico -->
+                <div class="form-group">
+                    <label for="{{ form.email.id_for_label }}">Correo Electrónico</label>
+                    {{ form.email }}
+                </div>
+
+                <!-- Contraseña -->
+                <div class="form-group">
+                    <label for="{{ form.password.id_for_label }}">Contraseña</label>
+                    {{ form.password }}
+                </div>
+
+                <!-- Confirmación de Contraseña -->
+                <div class="form-group">
+                    <label for="{{ form.password_confirmacion.id_for_label }}">Confirmar Contraseña</label>
+                    {{ form.password_confirmacion }}
+                </div>
+
+                <!-- Selección de Rol -->
+                <div class="form-group">
+                    <label for="{{ form.rol.id_for_label }}">Rol</label>
+                    {{ form.rol }}
+                </div>
+
+                <button type="submit" class="btn btn-primary">Registrarse</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

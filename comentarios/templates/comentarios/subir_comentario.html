@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}Subir Comentario{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card p-4 shadow-lg">
+        <h2 class="text-center mb-4">Subir Comentario</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            
+            <!-- Cuadrado que encierra todo el formulario -->
+            <div class="border p-4 rounded">
+                <div class="row">
+                    <!-- Columna para título -->
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label for="id_titulo">Título:</label>
+                            {{ form.titulo.errors }}
+                            {{ form.titulo }}
+                        </div>
+                    </div>
+
+                    <!-- Columna para comentario -->
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="id_comentario">Comentario:</label>  <!-- Cambiado de "Descripción" a "Comentario" -->
+                            {{ form.descripcion.errors }}
+                            <!-- Aquí es donde se muestra el cuadro de texto del comentario -->
+                            {{ form.descripcion }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botón de subir comentario -->
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-primary btn-sm" style="width: 33%;">Subir Comentario</button>
+            </div>
+        </form>
+
+        <!-- Botón "Volver" a la lista de comentarios -->
+        <div class="text-center mt-3">
+            <a href="{% url 'comentarios:lista_comentarios' %}" class="btn btn-secondary btn-sm" style="width: 33%;">Volver</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

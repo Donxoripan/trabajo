@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <!-- Botón para volver a la lista de comentarios -->
+    <div class="d-flex justify-content-end mb-3">
+        <a href="{% url 'comentarios:lista_comentarios' %}" class="btn btn-outline-secondary">Volver a la lista de comentarios</a>
+    </div>
+
+    <!-- Cuadro principal del comentario -->
+    <div class="card p-4 shadow-sm mb-4">
+        <div class="d-flex justify-content-between align-items-start">
+            <h3 class="card-title">{{ comentario.titulo }}</h3>
+
+            <!-- Botones de acción a la izquierda -->
+            <div class="d-flex">
+                {% if request.user.is_authenticated %}
+                    {% if request.user == comentario.autor or request.user.perfil.rol == 'editor' or request.user.perfil.rol == 'administrador' %}
+                        <a href="{% url 'comentarios:editar_comentario' comentario.id %}" class="btn btn-warning me-2">Editar</a>
+                    {% endif %}
+                    {% if request.user.perfil.rol == 'editor' or request.user.perfil.rol == 'administrador' %}
+                        <a href="{% url 'comentarios:eliminar_comentario' comentario.id %}" class="btn btn-danger">Eliminar</a>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Detalles del comentario -->
+        {% if comentario.descripcion %}
+            <div class="mb-3">
+                <p><strong>Comentario:</strong></p>
+                <p class="card-text">{{ comentario.descripcion }}</p>
+            </div>
+        {% else %}
+            <div class="mb-3">
+                <p><strong>Mensaje:</strong></p>
+                <p class="card-text">{{ comentario.mensaje }}</p>
+            </div>
+        {% endif %}
+        <p class="text-muted mb-2">
+            Publicado por: {{ comentario.usuario.username }}</p>
+        <p class="text-muted"><strong>Fecha de creación:</strong> {{ comentario.fecha_creacion|date:"d/m/Y H:i" }}</p>
+    </div>
+</div>
+{% endblock %}

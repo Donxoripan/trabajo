@@ -1,0 +1,50 @@
+<!-- usuarios/editar_perfil.html -->
+{% extends 'base.html' %}
+
+{% block title %}Editar Perfil{% endblock %}
+
+{% block content %}
+    <div class="container mt-4">
+        <div class="form-container">
+            <h1>Editar Perfil de {{ user.username }}</h1>
+
+            <!-- Mensajes de éxito o error -->
+            {% if messages %}
+                <div class="alert alert-info">
+                    {% for message in messages %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <form method="POST">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label for="id_username">Nombre de Usuario</label>
+                    {{ form.username }}
+                </div>
+
+                <div class="form-group">
+                    <label for="id_email">Correo electrónico</label>
+                    {{ form.email }}
+                </div>
+
+                <div class="form-group">
+                    <label for="id_password">Nueva Contraseña</label>
+                    {{ form.password }}
+                </div>
+
+                <div class="form-group">
+                    <label for="id_password_confirmacion">Confirmar Contraseña</label>
+                    {{ form.password_confirmacion }}
+                </div>
+
+                <button type="submit" class="btn btn-primary">Guardar cambios</button>
+            </form>
+
+            <!-- Enlace para volver al perfil -->
+            <a href="{% url 'usuarios:perfil' %}" class="btn btn-secondary mt-3">Volver al Perfil</a>
+        </div>
+    </div>
+{% endblock %}
